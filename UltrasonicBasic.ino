@@ -27,6 +27,7 @@ void setup() {
   pinMode(ENA, OUTPUT);
   pinMode(ENB, OUTPUT);
   stop();
+  Serial.println("Car Speed: " + carSpeed);
 } 
 
 void loop() { 
@@ -50,14 +51,14 @@ void loop() {
       delay(500);
       myservo.write(90);              
       delay(1000);
-      if(rightDistance > leftDistance) {
+      if((rightDistance <= 40) && (leftDistance <= 40)) {
+        back(carSpeed, 180);
+      }
+      else if(rightDistance > leftDistance) {
         right(carSpeed,360);
       }
       else if(rightDistance < leftDistance) {
         left(carSpeed,360);
-      }
-      else if((rightDistance <= 40) || (leftDistance <= 40)) {
-        back(180);
       }
       else {
         forward();
@@ -65,7 +66,8 @@ void loop() {
     }  
     else {
         forward();
-    }                     
+    }    
+    Serial.println("*******************");               
 }
 
 void forward(){ 
@@ -96,6 +98,7 @@ void forward(int speed, int delayTime){
   delay(delayTime);
   Serial.println("Forward");
 }
+
 void back() {
   analogWrite(ENA, carSpeed);
   analogWrite(ENB, carSpeed);
@@ -153,6 +156,7 @@ void left(int speed, int delayTime) {
   delay(delayTime);
   Serial.println("Left");
 }
+
 void right() {
   analogWrite(ENA, carSpeed);
   analogWrite(ENB, carSpeed);
@@ -181,6 +185,7 @@ void right(int speed, int delayTime) {
   delay(delayTime);
   Serial.println("Right");
 }
+
 void stop() {
   digitalWrite(ENA, LOW);
   digitalWrite(ENB, LOW);
@@ -199,7 +204,8 @@ int Distance_test() {
   digitalWrite(Trig, HIGH);  
   delayMicroseconds(20);
   digitalWrite(Trig, LOW);   
-  float Fdistance = pulseIn(Echo, HIGH);  
-  Fdistance= Fdistance / 58;       
+  float time = pulseIn(Echo, HIGH);  
+  float Fdistance = time / 58;
+  Serial.println(Fdistance);   
   return (int)Fdistance;
 }  
