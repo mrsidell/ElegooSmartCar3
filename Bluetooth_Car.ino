@@ -22,7 +22,7 @@ int Trig = A5;
 #define LED 13    //Define 13 pin for LED
 #define carSpeed 150 // speed can be 0-255
 bool state = LOW; //The initial state of the function is defined as a low level
-char getstr;      //Defines a function that receives the Bluetooth character
+char input;      //Defines a function that receives the Bluetooth character
 int rightDistance = 0, leftDistance = 0, middleDistance = 0;
 int angle = 90;
 int delta = 10;
@@ -47,14 +47,14 @@ void loop() {
   if(Serial.available())
   {
     //The Bluetooth serial port to receive the data in the function
-    getstr = Serial.read();
+    input = Serial.read();
     
-    if(getstr == 'a'){
+    if(input == 'w'){
       forward(200,500);
-      Serial.print(getstr);
     }
-    else if(getstr == 's')
+    else if(input == 's'){
       stop(500);
+    }
   }
 }// END LOOP
 
